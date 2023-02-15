@@ -1,0 +1,168 @@
+﻿@*@model IEnumerable<Assignment.Models.Category>*@
+@using Assignment
+@model dynamic
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/modernizr-2.6.2.js"></script>
+<script src="jquery-3.6.3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+<button id="btnCategotyMaster">Category Master</button>
+<button id="btnProductMaster"> Product Master</button>
+
+<br />
+<br />
+<br />
+
+<button id="btnAddCategory">Add Category</button>
+
+<div id="divCategory">
+    <form>
+        <label for="fname" id="lblCategoryName">Category name:</label>
+        <input type="text" id="txtCategoryName"><br><br>
+        <label id="lblCategoryError" style="color:red"></label>
+        <button type="button" id="btnCategorySubmit">Submit</button>
+
+
+    </form>
+</div>
+
+<button id="btnAddProduct">Add Product</button>
+<div id="divProduct">
+    <form>
+        <label for="fname" id="lblProductName">Product name:</label>
+        <input type="text" id="txtProductName"><br><br>
+        <label id="lblProductError" style="color:red"></label>
+        <br /><br />
+        <label id="lblCategoryName">Category Name:</label>
+        <select id="drpCtg" class="form-control chosen">
+            <option value="">Select Category</option>
+            @foreach (Assignment.Models.Category category in Model.Category)
+            {
+                <option value="@category.Category_id">@category.Category_name </option>
+
+            }
+        </select>
+        <br /><br />
+        <label id="lblddlCategoryError" style="color:red"></label>
+        <br /><br />
+        <button type="button" id="btnProductSubmit">Submit</button>
+
+
+    </form>
+</div>
+@if (Model != null)
+{
+    <div id="divCategoryTable">
+        <table border="1" id="tbl_Category"  class="display">
+            <thead>
+                <tr>
+                    <td>Category ID</td>
+                    <td>Category Name</td>
+                    <td>Edit/Delete</td>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (Assignment.Models.Category category in Model.Category)
+                {
+                    <tr>
+                        <td>@category.Category_id</td>
+                        <td>@category.Category_name</td>
+                        <td>
+                            <a id="EditCategoryDetails" onclick=EditCategoryDetails()>Edit</a> |
+                            @*<a id="DeleteCategoryDetails" onclick=EditCategoryDetails()>Delete</a>*@
+                            @*@Html.ActionLink("Edit", "", new { id = category.Category_id }, new {onclick = "EditCategoryDetails(" +category.Category_id +" )" }) |*@
+        @Html.ActionLink("Delete", "DeleteCategoryMaster", new { id = category.Category_id }, new { onclick = "return confirm('Are sure wants to delete?');" })
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@if (Model != null)
+{
+    <div id="divProductTable">
+        <table border="1" class="display" id="tbl_Product" width="100%">
+            <thead>
+                <tr>
+                    <td>Product ID</td>
+                    <td>Product Name</td>
+                    <td>Category ID</td>
+                    <td>Category Name</td>
+                    <td>Edit/Delete</td>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (Assignment.Models.Product product in Model.Product)
+                {
+                    <tr>
+                        <td>@product.Product_id</td>
+                        <td>@product.Product_name</td>
+                        <td>@product.Category_id</td>
+                        <td>@product.Category_name</td>
+                        <td>
+                            <a id="EditProductDetails" onclick=EditCategoryDetails()>Edit</a>
+                            @*@Html.ActionLink("Edit", "EditCategoryDetails", new { id = product.Product_id })*@ |
+                            @Html.ActionLink("Delete", "DeleteProductMaster", new { id = product.Product_id }, new { onclick = "return confirm('Are sure wants to delete?');" })
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="succesufullMsg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title modal-dialog-centered" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-dialog-centered" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        var DeleteCategoryMsg = '@ViewBag.DeleteCategoryMsg';
+        if (DeleteCategoryMsg != "") {
+            alert(DeleteCategoryMsg);
+        }
+    });
+
+</script>
+<script src="~/Scripts/Common.js"></script>
+
+
+
+
+
